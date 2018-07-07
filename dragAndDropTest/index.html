@@ -1,0 +1,153 @@
+<!--
+ Copyright (c) 2018 ml5
+ 
+ This software is released under the MIT License.
+ https://opensource.org/licenses/MIT
+-->
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>Image Classification using Feature Extraction with MobileNet</title>
+  <script src="https://unpkg.com/ml5" type="text/javascript"></script>
+  <style>
+  button {
+    margin: 2px;
+    padding: 4px;
+  }
+
+  img {
+    width: 224;
+    height: 224;
+  }
+
+  p {
+    display: inline;
+    font-size: 14px;
+  }
+
+  h6 {
+    margin: 4px;
+    font-weight: lighter;
+    font-size: 14px;
+    margin-bottom: 10px;
+  }
+
+  #holder {
+    border: 10px dashed #ccc;
+    width: 300px;
+    min-height: 300px;
+    margin: 20px auto;
+  }
+
+  #holder.hover {
+    border: 10px dashed #0c0;
+  }
+
+  #holder img {
+    display: block;
+    margin: 10px auto;
+  }
+
+  #holder p {
+    margin: 10px;
+    font-size: 14px;
+  }
+
+  .fail {
+    background: #c00;
+    padding: 2px;
+    color: #fff;
+  }
+
+  .hidden {
+    display: none !important;
+  }
+  </style>
+</head>
+
+<body>
+  
+  <div id="holder"></div>
+  <h6 id="loading">Loading base model...</h6>
+  <p>
+    <button id="catButton">Add True Image</button>
+    <p><span id="amountOfCatImages">0</span> True Images</p>
+    <br>
+    <button id="dogButton">Add False Image</button>
+    <p><span id="amountOfDogImages">0</span> False Images</p>
+  </p>
+  <br/>
+  <p>
+    <button id="train">Train</button><span id="loss"></span></p>
+  <br/>
+  <p>
+    <button id="predict">Start guessing!</button>
+    <br> My guess is: <span id="result">...</span>
+  </p>
+  <script>
+  var holder = document.getElementById('holder'),
+    tests = {
+      filereader: typeof FileReader != 'undefined',
+      dnd: 'draggable' in document.createElement('span'),
+      formdata: !!window.FormData,
+      progress: "upload" in new XMLHttpRequest
+    },
+    support = {
+      filereader: document.getElementById('filereader'),
+      formdata: document.getElementById('formdata'),
+      progress: document.getElementById('progress')
+    },
+    acceptedTypes = {
+      'image/png': true,
+      'image/jpeg': true,
+      'image/gif': true
+    },
+    progress = document.getElementById('uploadprogress'),
+    fileupload = document.getElementById('upload');
+
+
+  function previewfile(file) {
+    if (tests.filereader === true && acceptedTypes[file.type] === true) {
+      var reader = new FileReader();
+      reader.onload = function(event) {
+        var image = new Image();
+        image.id = 'image'
+        image.src = event.target.result;
+        image.width = 250; // a fake resize
+        holder.innerHTML = '';
+        holder.appendChild(image);
+      };
+
+      reader.readAsDataURL(file);
+    }
+
+  }
+
+  function readfiles(files) {
+    var formData = tests.formdata ? new FormData() : null;
+    for (var i = 0; i < files.length; i++) {
+      if (tests.formdata) formData.append('file', files[i]);
+      previewfile(files[i]);
+    }
+  }
+
+  if (tests.dnd) {
+    holder.ondragover = function() { this.className = 'hover'; return false; };
+    holder.ondragend = function() { this.className = ''; return false; };
+    holder.ondrop = function(e) {
+      this.className = '';
+      e.preventDefault();
+      readfiles(e.dataTransfer.files);
+    }
+  } else {
+    fileupload.className = 'hidden';
+    fileupload.querySelector('input').onchange = function() {
+      readfiles(this.files);
+    };
+  }
+  </script>
+  <script src="sketch.js"></script>
+</body>
+
+</html>

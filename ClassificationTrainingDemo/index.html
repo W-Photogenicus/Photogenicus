@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>ml5.js demo</title>
+  <script src="https://unpkg.com/ml5" type="text/javascript" crossorigin="anonymous"></script>
+  <style>
+  img {
+    width: 224;
+    height: 224;
+  }
+  </style>
+</head>
+
+<body>
+  <img id="t1" src="t.jpg" crossorigin="anonymous" width="224px" height="224px">
+  <img id="t2" src="t1.jpg" crossorigin="anonymous" width="224px" height="224px">
+  <img id="t3" src="t2.jpg" crossorigin="anonymous" width="224px" height="224px">
+  <img id="t4" src="t3.jpg" crossorigin="anonymous" width="224px" height="224px">
+  <img id="t5" src="t4.jpg" crossorigin="anonymous" width="224px" height="224px">
+  <img id="t6" src="t5.jpg" crossorigin="anonymous" width="224px" height="224px">
+  <img id="f1" src="f.jpg" crossorigin="anonymous" width="224px" height="224px">
+  <img id="f2" src="f1.jpg" crossorigin="anonymous" width="224px" height="224px">
+  <img id="f3" src="f2.jpg" crossorigin="anonymous" width="224px" height="224px">
+  <img id="f4" src="f3.jpg" crossorigin="anonymous" width="224px" height="224px">
+  <img id="f5" src="f4.jpg" crossorigin="anonymous" width="224px" height="224px">
+  <img id="test1" src="07060013.jpg" crossorigin="anonymous" width="224px" height="224px">
+  <img id="test2" src="07010508.jpg" crossorigin="anonymous" width="224px" height="224px">
+  <img id="test3" src="06300371.jpg" crossorigin="anonymous" width="224px" height="224px">
+  <img id="test4" src="06300354.jpg" crossorigin="anonymous" width="224px" height="224px">
+  <script>
+  // Create a new classifier using those features
+  let features = ml5.featureExtractor('MobileNet', onceLoaded);
+
+
+  function onceLoaded() {
+    const classifier = features.classification();
+    // Add a new image with a label
+    classifier.addImage(document.getElementById('t1'), 'true');
+    classifier.addImage(document.getElementById('t2'), 'true');
+    classifier.addImage(document.getElementById('t3'), 'true');
+    classifier.addImage(document.getElementById('t4'), 'true');
+    classifier.addImage(document.getElementById('t5'), 'true');
+    classifier.addImage(document.getElementById('t6'), 'true');
+    classifier.addImage(document.getElementById('f1'), 'false');
+    classifier.addImage(document.getElementById('f2'), 'false');
+    classifier.addImage(document.getElementById('f3'), 'false');
+    classifier.addImage(document.getElementById('f4'), 'false');
+    classifier.addImage(document.getElementById('f5'), 'false');
+
+
+
+    // Retrain the network
+    classifier.train();
+
+    // Get a prediction for that image
+    classifier.classify(document.getElementById('test1'), function(results) { //maybe .classify()?
+      console.log(results) // Should output ['dog']
+    });
+    classifier.classify(document.getElementById('test2'), function(results) {
+      console.log(results) // Should output ['dog']
+    });
+    classifier.classify(document.getElementById('test3'), function(results) {
+      console.log(results) // Should output ['dog']
+    });
+    classifier.classify(document.getElementById('test4'), function(results) {
+      console.log(results) // Should output ['dog']
+    });
+  }
+  </script>
+</body>
+
+</html>

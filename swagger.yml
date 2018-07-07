@@ -1,0 +1,111 @@
+swagger: "2.0"
+info:
+  description: "The API Server that returns images for the Photgenicus client.
+  \n
+  
+  Note: Images will be referred to as TRUE and FALSE. That refers to the classification we gave it, when training our machine learning model. It does not refer to a boolean value. 
+  "
+  version: "1.0.0"
+  title: "Photogenicus Image Server"
+host: "localhost:5000"
+basePath: "/"
+tags:
+- name: "GetImages"
+  description: "Endpoints to get images"
+- name: "StaticImages"
+  description: "Endpoints to return static images"
+schemes:
+- "http"
+paths:
+  /gettrue:
+    get:
+      tags:
+      - "GetImages"
+      summary: "Returns all images that have already been defined as a TRUE value in our training model."
+      description: "Multiple status values can be provided with comma separated strings"
+      operationId: ""
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/ImageUrls"
+        400:
+          description: "No images found"
+  /getfalse:
+    get:
+      tags:
+      - "GetImages"
+      summary: "Returns all images that have already been defined as a FALSE value in our training model."
+      description: "Returns a map of status codes to quantities"
+      operationId: ""
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/ImageUrls"
+        400:
+          description: "No images found"
+  /getfresh:
+    get:
+      tags:
+      - "GetImages"
+      summary: "Returns all images that have already been defined as a FALSE value in our training model."
+      description: "Returns a map of status codes to quantities"
+      operationId: ""
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/ImageUrls"
+        400:
+          description: "No images found"          
+  /upload:
+    post:
+      tags:
+      - "GetImages"
+      summary: "Endpoint to upload images"
+      description: "This can upload one image at a time via form submit"
+      operationId: "createUser"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/ImageUrls"
+        500:
+          description: "Image upload is not successful"
+  /public/*/[imagefilename]:
+    get:
+      tags:
+      - "StaticImages"
+      summary: "Endpoint to server back static images"
+      description: "Some folders in public are fresh, true, false"
+      operationId: ""
+      produces:
+      - "image/png"
+      parameters: []
+      responses:
+        200:
+          description: "Image returned properly"
+        404:
+          description: "Image not found"
+definitions:
+  ImageUrls:
+    type: "object"
+    properties:
+      url:
+        type: "string"
+    xml:
+      name: "User"
+
