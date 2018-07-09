@@ -33,7 +33,6 @@ export default class TrueImages extends Component {
     .then(urlArr => {
       urlArr.forEach((pic, i) => {
         let image = <img src={pic.url} id={'true' + i} width="224px" height="224px" key={'true' + i} crossOrigin="anonymous"/>
-
         images.push(image);
            console.log(images);
       });
@@ -46,8 +45,6 @@ export default class TrueImages extends Component {
   }
 
   render() {
-    
-
     return (
       <div id="true">
       <p>true</p>
