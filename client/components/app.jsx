@@ -8,14 +8,22 @@ import { Button, Navbar } from 'react-bootstrap';
 
 export default class App extends Component {
 
+  constructor() {
+    super();
+    this.state = {
+      trained: false
+    }
+  }
 
   train() {
     // let loss = document.getElementById('loss')
     this.props.classifier.train() 
+
   }
   render() {
     return (
       <div>
+
         <Navbar inverse>
           <Navbar.Header>
             <Navbar.Brand>
@@ -27,6 +35,7 @@ export default class App extends Component {
         <TrueImages classifier={this.props.classifier}/>
         <FalseImages classifier={this.props.classifier}/>
         <FreshImages classifier={this.props.classifier}/>
+
       </div>
     )
   }

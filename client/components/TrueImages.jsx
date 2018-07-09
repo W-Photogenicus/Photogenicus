@@ -12,11 +12,18 @@ export default class TrueImages extends Component {
 
   addToModel() {
     let images = this.state.images;
+    let total = images.length - 1;
+    let addTrue = document.getElementById('truestatus');
+    addTrue.innerHTML = '0%';
     images.forEach((imageEl, i) => {
-      console.log('adding to classifier');
-      this.props.classifier.addImage(document.getElementById('true' + i), 'true');
+      this.props.classifier.addImage(document.getElementById('true' + i), 'true', () => {
+        let current = i;
+        let percentage = Math.floor((current / total) * 100)+'%'
+        addTrue.innerHTML = percentage;
+      });
     })
     let container = document.getElementById('truebox');
+    document.getElementById('addtrue').disabled = true;
     container.innerHTML = ''
   }
 
@@ -36,6 +43,7 @@ export default class TrueImages extends Component {
         // let image = <img src={pic.url} id={'true' + i} width="224px" height="224px" key={'true' + i} crossOrigin="anonymous"/>
         images.push(pic.url);
           //  console.log(images);
+
       });
       this.setState(preState => {
         preState.images = images;
@@ -76,6 +84,7 @@ export default class TrueImages extends Component {
       <div id="true">
       <p>True Images</p>
       <Button bsStyle="info" onClick={this.addToModel.bind(this)}>Add to True Model</Button>
+
         <div id="truebox">
           <Grid>
             {outputImagesArr}
