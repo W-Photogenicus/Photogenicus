@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Button, Grid, Row, Col, Image } from 'react-bootstrap';
 // import '../style/style.css';
 
 export default class TrueImages extends Component {
@@ -39,9 +40,10 @@ export default class TrueImages extends Component {
     })
     .then(urlArr => {
       urlArr.forEach((pic, i) => {
-        let image = <img src={pic.url} id={'true' + i} width="224px" height="224px" key={'true' + i} crossOrigin="anonymous"/>
+        // let image = <img src={pic.url} id={'true' + i} width="224px" height="224px" key={'true' + i} crossOrigin="anonymous"/>
+        images.push(pic.url);
+          //  console.log(images);
 
-        images.push(image);
       });
       this.setState(preState => {
         preState.images = images;
@@ -52,14 +54,41 @@ export default class TrueImages extends Component {
   }
 
   render() {
-    
+    var arrays = [], size = 4;
+    console.log(this.state.images);
 
+    while (this.state.images.length > 0)
+      arrays.push(this.state.images.splice(0, size));
+
+    let outputImagesArr = [];
+    // future todo, is to break out row, col, and image into separate containers
+    for ( let ii = 0; ii < arrays.length; ii++) {
+      outputImagesArr.push(
+        <Row key={ii}>
+          <Col xs={12} sm={3}>
+            <Image width="224px" height="224px" className='img-thumbnail' key={arrays[ii][0]} crossOrigin="anonymous" src={arrays[ii][0]} />
+          </Col>
+          <Col xs={12} sm={3}>
+            <Image width="224px" height="224px" className='img-thumbnail' key={arrays[ii][0]} crossOrigin="anonymous" src={arrays[ii][1]} />
+          </Col>
+          <Col xs={12} sm={3}>
+            <Image width="224px" height="224px" className='img-thumbnail' key={arrays[ii][0]} crossOrigin="anonymous" src={arrays[ii][2]} />
+          </Col>
+          <Col xs={12} sm={3}>
+            <Image width="224px" height="224px" className='img-thumbnail' key={arrays[ii][0]} crossOrigin="anonymous" src={arrays[ii][3]} />
+          </Col>
+        </Row>
+      );
+    }
     return (
       <div id="true">
-      <p>true</p>
-      <button id="addtrue" onClick={this.addToModel.bind(this)} >Add to Model</button> <span id="truestatus"></span>
+      <p>True Images</p>
+      <Button bsStyle="info" onClick={this.addToModel.bind(this)}>Add to True Model</Button>
+
         <div id="truebox">
-          {this.state.images}
+          <Grid>
+            {outputImagesArr}
+          </Grid>
         </div>
      </div>
     )
