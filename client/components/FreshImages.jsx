@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Button, Grid, Row, Col, Image } from 'react-bootstrap';
 // import '../style/style.css';
 
 export default class TrueImages extends Component {
@@ -51,10 +52,9 @@ export default class TrueImages extends Component {
     })
     .then(urlArr => {
       urlArr.forEach((pic, i) => {
-        let image = <img src={pic.url} id={'fresh' + i} width="224px" height="224px" key={'fresh' + i} crossOrigin="anonymous"/>
-
-        images.push(image);
-           console.log(images);
+        //let image = <img src={pic.url} id={'fresh' + i} width="224px" height="224px" key={'fresh' + i} crossOrigin="anonymous"/>
+        images.push(pic.url);
+          //  console.log(images);
       });
       this.setState(preState => {
         preState.images = images;
@@ -65,17 +65,47 @@ export default class TrueImages extends Component {
   }
 
   render() {
-    
+
+    //this.state.images  is our LARGE array
+    var arrays = [], size = 4;
+
+    while (this.state.images.length > 0)
+      arrays.push(this.state.images.splice(0, size));
+
+    let outputImagesArr = [];
+    // future todo, is to break out row, col, and image into separate containers
+    for ( let ii = 0; ii < arrays.length; ii++) {
+      outputImagesArr.push(
+        <Row key={ii}>
+          <Col xs={12} sm={3}>
+            <Image width="224px" height="224px" className='img-thumbnail' key={arrays[ii][0]} crossOrigin="anonymous" src={arrays[ii][0]} />
+          </Col>
+          <Col xs={12} sm={3}>
+            <Image width="224px" height="224px" className='img-thumbnail' key={arrays[ii][0]} crossOrigin="anonymous" src={arrays[ii][1]} />
+          </Col>
+          <Col xs={12} sm={3}>
+            <Image width="224px" height="224px" className='img-thumbnail' key={arrays[ii][0]} crossOrigin="anonymous" src={arrays[ii][2]} />
+          </Col>
+          <Col xs={12} sm={3}>
+            <Image width="224px" height="224px" className='img-thumbnail' key={arrays[ii][0]} crossOrigin="anonymous" src={arrays[ii][3]} />
+          </Col>
+        </Row>
+      );
+    }
 
     return (
       <div id="true">
       <p>true</p>
-      <button onClick={this.classify.bind(this)} >Classify</button>
-        <div id="truebox">
-          {this.state.images}
-        </div>
+      <Button bsStyle="success" onClick={this.classify.bind(this)} >Classify</Button>
+      <div id="truebox">
+      <Grid>
+          {outputImagesArr}
+        </Grid>
+      </div>
      </div>
     )
   }
 
 }
+
+
