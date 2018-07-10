@@ -6,3 +6,8 @@ img {
 	max-height: 100vh;
 	overflow-y: scroll;
 }
+
+.collapsed {
+	max-height: 30px!important;
+	overflow-y: scroll;
+}
